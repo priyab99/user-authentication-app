@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}User Auth{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Inter font and rounded corners */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .rounded-box {
+            border-radius: 0.75rem; /* Equivalent to rounded-xl in Tailwind */
+        }
+        .btn {
+            @apply inline-flex items-center justify-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 ease-in-out;
+        }
+        .btn-secondary {
+            @apply bg-gray-600 hover:bg-gray-700;
+        }
+        .flash-message {
+            @apply p-3 mb-4 rounded-lg text-sm font-medium;
+        }
+        .flash-message.success {
+            @apply bg-green-100 text-green-800;
+        }
+        .flash-message.error {
+            @apply bg-red-100 text-red-800;
+        }
+        .flash-message.info {
+            @apply bg-blue-100 text-blue-800;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 p-10 bg-white rounded-box shadow-lg">
+        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            {% block heading %}{% endblock %}
+        </h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="space-y-3">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block heading %}Welcome, {{ username }}!{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <p class="text-gray-700 mb-6">You have successfully logged in to your secure dashboard.</p>
+    <a href="{{ url_for('logout') }}" class="btn btn-secondary">
+        Logout
+    </a>
+</div>
+{% endblock %}
