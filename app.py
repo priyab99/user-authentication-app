@@ -289,25 +289,25 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('login'))
 
-# --- Database Initialization ---
+# --- Database Initialization (IMPORTANT CHANGE HERE) ---
 # This block ensures the database tables are created when the app runs.
-# In a production environment, you might use Flask-Migrate for migrations.
-@app.before_first_request
-def create_tables():
-    """
-    Creates all database tables defined by SQLAlchemy models.
-    This runs once before the first request to the application.
-    """
-    print("Attempting to create database tables...")
-    try:
-        db.create_all()
-        print("Database tables created successfully or already exist.")
-    except Exception as e:
-        print(f"Error creating database tables: {e}")
-        # In a real app, you might want to log this error more robustly
+# We're moving this into the __main__ block using an application context.
+# This is the modern and correct way to handle one-time setup tasks in Flask.
 
 # --- Run the Application ---
 if __name__ == '__main__':
     # When running locally, set debug to True for development convenience.
     # For production, debug should be False.
+
+    # Create application context to ensure database tables are created
+    # This runs once when the app starts, for both local and Render deployments
+    with app.app_context():
+        print("Attempting to create database tables...")
+        try:
+            db.create_all()
+            print("Database tables created successfully or already exist.")
+        except Exception as e:
+            print(f"Error creating database tables: {e}")
+            # In a real app, you might want to log this error more robustly
+
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
